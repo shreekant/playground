@@ -1,0 +1,42 @@
+name: Three Stage Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  stage1:
+    name: Stage 1 - Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo in Stage 1
+        run: echo "Running Stage 1"
+
+  stage2-part-a:
+    name: Stage 2A - Parallel Part
+    runs-on: ubuntu-latest
+    needs: stage1
+    steps:
+      - name: Echo in Stage 2A
+        run: echo "Running Stage 2A in parallel"
+
+  stage2-part-b:
+    name: Stage 2B - Parallel Part
+    runs-on: ubuntu-latest
+    needs: stage1
+    steps:
+      - name: Echo in Stage 2B
+        run: echo "Running Stage 2B in parallel"
+
+  stage3:
+    name: Stage 3 - Finalize
+    runs-on: ubuntu-latest
+    needs:
+      - stage2-part-a
+      - stage2-part-b
+    steps:
+      - name: Echo in Stage 3
+        run: echo "Running Stage 3 after parallel middle stage"
+        
